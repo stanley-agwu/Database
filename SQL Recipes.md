@@ -28,7 +28,6 @@ A record, also called a row, is each individual entry that exists in a table. Fo
 
 A column is a vertical entity in a table that contains all information associated with a specific field in a table.
 -----------------------------------------------------------------------
-
 ## SQL Statements
 SQL keywords are NOT case sensitive.Some database systems require a semicolon at the end of each SQL statement.
 
@@ -894,6 +893,337 @@ Return all customers from Spain:
 SELECT * FROM Customers
 WHERE Country LIKE 'Spain';
 -------------------------------------------------------------------------------
+### SQL Wildcards
+
+SQL Wildcard Characters
+A wildcard character is used to substitute one or more characters in a string.
+
+Wildcard characters are used with the LIKE operator. The LIKE operator is used in a WHERE clause to search for a specified pattern in a column.
+
+Example
+Return all customers that starts with the letter 'a':
+
+SELECT * FROM Customers
+WHERE CustomerName LIKE 'a%';
+
+##### Wildcard Characters
+Symbol	          Description
+-------------------------------------------------------------------------------
+%	                Represents zero or more characters
+_	                Represents a single character
+[]	              Represents any single character within the brackets *
+^	                Represents any character not in the brackets *
+-	                Represents any single character within the specified range *
+{}	              Represents any escaped character **
+
+* Not supported in PostgreSQL and MySQL databases.
+** Supported only in Oracle databases.
+
+##### Using the % Wildcard
+The % wildcard represents any number of characters, even zero characters.
+
+Example
+Return all customers that ends with the pattern 'es':
+
+SELECT * FROM Customers
+WHERE CustomerName LIKE '%es';
+
+Example
+Return all customers that contains the pattern 'mer':
+
+SELECT * FROM Customers
+WHERE CustomerName LIKE '%mer%';
+
+##### Using the _ Wildcard
+The _ wildcard represents a single character.
+
+It can be any character or number, but each _ represents one, and only one, character.
+
+Example
+Return all customers with a City starting with any character, followed by "ondon":
+
+SELECT * FROM Customers
+WHERE City LIKE '_ondon';
+
+Example
+Return all customers with a City starting with "L", followed by any 3 characters, ending with "on":
+
+SELECT * FROM Customers
+WHERE City LIKE 'L___on';
+
+##### Using the [] Wildcard
+The [] wildcard returns a result if any of the characters inside gets a match.
+
+Example
+Return all customers starting with either "b", "s", or "p":
+
+SELECT * FROM Customers
+WHERE CustomerName LIKE '[bsp]%';
+
+##### Using the - Wildcard
+The - wildcard allows you to specify a range of characters inside the [] wildcard.
+
+Example
+Return all customers starting with "a", "b", "c", "d", "e" or "f":
+
+SELECT * FROM Customers
+WHERE CustomerName LIKE '[a-f]%';
+
+##### Combine Wildcards
+Any wildcard, like % and _ , can be used in combination with other wildcards.
+
+Example
+Return all customers that starts with "a" and are at least 3 characters in length:
+
+SELECT * FROM Customers
+WHERE CustomerName LIKE 'a__%';
+
+Example
+Return all customers that have "r" in the second position:
+
+SELECT * FROM Customers
+WHERE CustomerName LIKE '_r%';
+
+##### Without Wildcard
+If no wildcard is specified, the phrase has to have an exact match to return a result.
+
+Example
+Return all customers from Spain:
+
+SELECT * FROM Customers
+WHERE Country LIKE 'Spain';
+
+##### Microsoft Access Wildcards
+The Microsoft Access Database has some other wildcards:
+
+Symbol	Description	                                                Example
+*	      Represents zero or more characters	                        bl* finds bl, black, blue, and blob
+?	      Represents a single character	                              h?t finds hot, hat, and hit
+[]	    Represents any single character within the brackets	        h[oa]t finds hot and hat, but not hit
+!	      Represents any character not in the brackets	              h[!oa]t finds hit, but not hot and hat
+-	      Represents any single character within the specified range	c[a-b]t finds cat and cbt
+#	      Represents any single numeric character	                    2#5 finds 205, 215, 225, 235, 245, 255, 265, 275, 285, and 295
+-------------------------------------------------------------------------------
+### The SQL IN Operator
+
+The IN operator allows you to specify multiple values in a WHERE clause.
+
+The IN operator is a shorthand for multiple OR conditions.
+
+Example
+Return all customers from 'Germany', 'France', or 'UK'
+
+SELECT * FROM Customers
+WHERE Country IN ('Germany', 'France', 'UK');
+
+##### Syntax
+SELECT column_name(s)
+FROM table_name
+WHERE column_name IN (value1, value2, ...);
+
+##### NOT IN
+By using the NOT keyword in front of the IN operator, you return all records that are NOT any of the values in the list.
+
+Example
+Return all customers that are NOT from 'Germany', 'France', or 'UK':
+
+SELECT * FROM Customers
+WHERE Country NOT IN ('Germany', 'France', 'UK');
+
+##### IN (SELECT)
+You can also use IN with a subquery in the WHERE clause.
+
+With a subquery you can return all records from the main query that are present in the result of the subquery.
+
+Example
+Return all customers that have an order in the Orders table:
+
+SELECT * FROM Customers
+WHERE CustomerID IN (SELECT CustomerID FROM Orders);
+
+##### NOT IN (SELECT)
+The result in the example above returned 74 records, that means that there are 17 customers that haven't placed any orders.
+
+Let us check if that is correct, by using the NOT IN operator.
+
+Example
+Return all customers that have NOT placed any orders in the Orders table:
+
+SELECT * FROM Customers
+WHERE CustomerID NOT IN (SELECT CustomerID FROM Orders);
+-------------------------------------------------------------------------------
+### SQL BETWEEN Operator
+
+The SQL BETWEEN Operator
+The BETWEEN operator selects values within a given range. The values can be numbers, text, or dates.
+
+The BETWEEN operator is inclusive: begin and end values are included. 
+
+Example
+Selects all products with a price between 10 and 20:
+
+SELECT * FROM Products
+WHERE Price BETWEEN 10 AND 20;
+
+##### Syntax
+SELECT column_name(s)
+FROM table_name
+WHERE column_name BETWEEN value1 AND value2;
+
+##### NOT BETWEEN
+To display the products outside the range of the previous example, use NOT BETWEEN:
+
+Example
+SELECT * FROM Products
+WHERE Price NOT BETWEEN 10 AND 20;
+
+##### BETWEEN with IN
+The following SQL statement selects all products with a price between 10 and 20. In addition, the CategoryID must be either 1,2, or 3:
+
+Example
+SELECT * FROM Products
+WHERE Price BETWEEN 10 AND 20
+AND CategoryID IN (1,2,3);
+
+##### BETWEEN Text Values
+The following SQL statement selects all products with a ProductName alphabetically between Carnarvon Tigers and Mozzarella di Giovanni:
+
+Example
+SELECT * FROM Products
+WHERE ProductName BETWEEN 'Carnarvon Tigers' AND 'Mozzarella di Giovanni'
+ORDER BY ProductName;
+
+The following SQL statement selects all products with a ProductName between Carnarvon Tigers and Chef Anton's Cajun Seasoning:
+
+Example
+SELECT * FROM Products
+WHERE ProductName BETWEEN "Carnarvon Tigers" AND "Chef Anton's Cajun Seasoning"
+ORDER BY ProductName;
+
+##### NOT BETWEEN Text Values
+The following SQL statement selects all products with a ProductName not between Carnarvon Tigers and Mozzarella di Giovanni:
+
+Example
+SELECT * FROM Products
+WHERE ProductName NOT BETWEEN 'Carnarvon Tigers' AND 'Mozzarella di Giovanni'
+ORDER BY ProductName;
+
+##### BETWEEN Dates
+The following SQL statement selects all orders with an OrderDate between '01-July-1996' and '31-July-1996':
+
+Example
+SELECT * FROM Orders
+WHERE OrderDate BETWEEN #07/01/1996# AND #07/31/1996#;
+OR:
+
+Example
+SELECT * FROM Orders
+WHERE OrderDate BETWEEN '1996-07-01' AND '1996-07-31';
+--------------------------------------------------------------------------------
+### SQL Aliases
+
+SQL Aliases
+SQL aliases are used to give a table, or a column in a table, a temporary name.
+
+Aliases are often used to make column names more readable.
+
+An alias only exists for the duration of that query.
+
+An alias is created with the AS keyword.
+
+Example
+SELECT CustomerID AS ID
+FROM Customers;
+
+##### AS is Optional
+Actually, in most database languages, you can skip the AS keyword and get the same result:
+
+Example
+SELECT CustomerID ID
+FROM Customers;
+
+##### Syntax
+When alias is used on column:
+
+SELECT column_name AS alias_name
+FROM table_name;
+
+When alias is used on table:
+
+SELECT column_name(s)
+FROM table_name AS alias_name;
+
+##### Alias for Columns
+The following SQL statement creates two aliases, one for the CustomerID column and one for the CustomerName column:
+
+Example
+SELECT CustomerID AS ID, CustomerName AS Customer
+FROM Customers;
+
+##### Using Aliases With a Space Character
+If you want your alias to contain one or more spaces, like "My Great Products", surround your alias with square brackets or double quotes.
+
+Example
+Using [square brackets] for aliases with space characters:
+
+SELECT ProductName AS [My Great Products]
+FROM Products;
+
+Example
+Using "double quotes" for aliases with space characters:
+
+SELECT ProductName AS "My Great Products"
+FROM Products;
+
+- Note: Some database systems allows both [] and "", and some only allows one of them.
+
+##### Concatenate Columns
+The following SQL statement creates an alias named "Address" that combine four columns (Address, PostalCode, City and Country):
+
+Example
+SELECT CustomerName, Address + ', ' + PostalCode + ' ' + City + ', ' + Country AS Address
+FROM Customers;
+
+- Note: To get the SQL statement above to work in MySQL use the following:
+
+MySQL Example
+SELECT CustomerName, CONCAT(Address,', ',PostalCode,', ',City,', ',Country) AS Address
+FROM Customers;
+
+- Note: To get the SQL statement above to work in Oracle use the following:
+
+Oracle Example
+SELECT CustomerName, (Address || ', ' || PostalCode || ' ' || City || ', ' || Country) AS Address
+FROM Customers;
+
+##### Alias for Tables
+The same rules applies when you want to use an alias for a table.
+
+Example
+Refer to the Customers table as Persons instead:
+
+SELECT * FROM Customers AS Persons;
+
+It might seem useless to use aliases on tables, but when you are using more than one table in your queries, it can make the SQL statements shorter.
+
+The following SQL statement selects all the orders from the customer with CustomerID=4 (Around the Horn). We use the "Customers" and "Orders" tables, and give them the table aliases of "c" and "o" respectively (Here we use aliases to make the SQL shorter):
+
+Example
+SELECT o.OrderID, o.OrderDate, c.CustomerName
+FROM Customers AS c, Orders AS o
+WHERE c.CustomerName='Around the Horn' AND c.CustomerID=o.CustomerID;
+The following SQL statement is the same as above, but without aliases:
+
+Example
+SELECT Orders.OrderID, Orders.OrderDate, Customers.CustomerName
+FROM Customers, Orders
+WHERE Customers.CustomerName='Around the Horn' AND Customers.CustomerID=Orders.CustomerID;
+
+Aliases can be useful when:
+- There are more than one table involved in a query
+- Functions are used in the query
+- Column names are big or not very readable
+- Two or more columns are combined together
 -------------------------------------------------------------------------------
 ### SQL Joins
 
@@ -925,12 +1255,12 @@ INNER JOIN Customers ON Orders.CustomerID=Customers.CustomerID;
 
 and it will produce something like this:
 
-OrderID	    CustomerName	        OrderDate
-10308	    Ana Trujillo 	        9/18/1996
-10365	    Antonio Moreno 	        11/27/1996
-10383	    Around the Horn	        12/16/1996
-10355	    Around the Horn	        11/15/1996
-10278	    Berglunds snabbköp	    8/12/1996
+OrderID	    CustomerName	          OrderDate
+10308	      Ana Trujillo 	          9/18/1996
+10365	      Antonio Moreno 	        11/27/1996
+10383	      Around the Horn	        12/16/1996
+10355	      Around the Horn	        11/15/1996
+10278	      Berglunds snabbköp	    8/12/1996
 
 ### Different Types of SQL JOINs
 Here are the different types of the JOINs in SQL:
@@ -1206,10 +1536,10 @@ We will use the well-known Northwind sample database.
 
 Below is a selection from the "Customers" table:
 
-CustomerID	CustomerName	            City	    PostalCode	Country
-1           Alfreds Futterkiste	        Berlin	    12209	    Germany
-2	        Ana Trujillo Emparedados    México D.F.	05021	    Mexico
-3	        Antonio Moreno Taquería     México D.F.	05023	    Mexico
+CustomerID	CustomerName	              City	        PostalCode	  Country
+1           Alfreds Futterkiste	        Berlin	      12209	        Germany
+2	          Ana Trujillo Emparedados    México D.F.	  05021	        Mexico
+3	          Antonio Moreno Taquería     México D.F.	  05023	        Mexico
 
 And a selection from the "Suppliers" table:
 
@@ -1277,17 +1607,17 @@ We will use the well-known Northwind sample database.
 
 Below is a selection from the "Customers" table:
 
-CustomerID	CustomerName	            City	    PostalCode	Country
-1           Alfreds Futterkiste	        Berlin	    12209	    Germany
-2	        Ana Trujillo Emparedados    México D.F.	05021	    Mexico
-3	        Antonio Moreno Taquería     México D.F.	05023	    Mexico
+CustomerID	  CustomerName	              City	        PostalCode	  Country
+1             Alfreds Futterkiste	        Berlin	      12209	        Germany
+2	            Ana Trujillo Emparedados    México D.F.	  05021	        Mexico
+3	            Antonio Moreno Taquería     México D.F.	  05023	        Mexico
 
 And a selection from the "Suppliers" table:
 
-SupplierID	SupplierName	            City	        PostalCode	Country
-1	        Exotic Liquid	            London	        EC1 4SD	    UK
-2	        New Orleans Cajun Delights	New Orleans	    70117	    USA
-3	        Grandma Kelly's Homestead	Ann Arbor	    48104	    USA
+SupplierID	  SupplierName	              City	          PostalCode	  Country
+1	            Exotic Liquid	              London	        EC1 4SD	      UK
+2	            New Orleans Cajun Delights	New Orleans	    70117	        USA
+3	            Grandma Kelly's Homestead	  Ann Arbor	      48104	        USA
 
 ##### SQL UNION ALL Example
 The following SQL statement returns the cities (duplicate values also) from both the "Customers" and the "Suppliers" table:
