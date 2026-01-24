@@ -77,7 +77,7 @@ Note: The WHERE clause is not only used in SELECT statements, it is also used in
 SQL requires single quotes around text values (most database systems will also allow double quotes).
 
 However, numeric fields should not be enclosed in quotes.
-
+-------------------------------------------------------------------------------
 ### The SQL ORDER BY
 The ORDER BY keyword is used to sort the result-set in ascending or descending order.
 
@@ -424,7 +424,7 @@ Example
 Remove the Customers table:
 
 DROP TABLE Customers;
------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 ### The SQL SELECT TOP Clause
 The SELECT TOP clause is used to specify the number of records to return.
 
