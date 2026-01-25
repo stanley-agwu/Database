@@ -17,22 +17,17 @@ STATION:
 |LONG_W      | NUMBER       |
 +------------+--------------+
 
-->
+##### Solution
 SELECT DISTINCT CITY
 FROM STATION
 WHERE ID % 2 = 0;
 ---------------------------------------------------------------------
 ### 2. Weather Observation Station 4
 Find the difference between the total number of CITY entries in the table and the number of distinct CITY entries in the table.
-The STATION table is described as follows:
-
-Station.jpg
-
-where LAT_N is the northern latitude and LONG_W is the western longitude.
 
 For example, if there are three records in the table with CITY values 'New York', 'New York', 'Bengalaru', there are 2 different city names: 'New York' and 'Bengalaru'. The query returns , because total number of records - number of unique city names = 3 - 2 = 1
 
-->
+##### Solution
 SELECT COUNT(CITY) - COUNT(DISTINCT CITY)
 FROM STATION
 ------------------------------------------------------------------------
@@ -52,7 +47,8 @@ When ordered alphabetically, the CITY names are listed as ABC, DEF, PQRS, and WX
 Note
 You can write two separate queries to get the desired output. It need not be a single query.
 
-->
+##### Solution
+
 ##### Goal
 Return:
 1. City with the shortest name and its length
@@ -95,7 +91,7 @@ UNION ALL
 ### 4. Weather Observation Station 6
 Query the list of CITY names starting with vowels (i.e., a, e, i, o, or u) from STATION table. Your result cannot contain duplicates.
 
-->
+##### Solution
 SELECT DISTINCT CITY
 FROM STATION
 WHERE CITY REGEXP '^[AEIOUaeiou]';
@@ -103,7 +99,7 @@ WHERE CITY REGEXP '^[AEIOUaeiou]';
 ### 5. Weather Observation Station 7
 Query the list of CITY names ending with vowels (a, e, i, o, u) from STATION. Your result cannot contain duplicates.
 
-->
+##### Solution
 SELECT DISTINCT CITY
 FROM STATION
 WHERE CITY REGEXP '[AEIOUaeiou]$';
@@ -111,7 +107,7 @@ WHERE CITY REGEXP '[AEIOUaeiou]$';
 ### 6. Weather Observation Station 8
 Query the list of CITY names from STATION which have vowels (i.e., a, e, i, o, and u) as both their first and last characters. Your result cannot contain duplicates.
 
-->
+##### Solution
 SELECT DISTINCT CITY
 FROM STATION
 WHERE CITY REGEXP '^[AEIOUaeiou]' AND CITY REGEXP '[AEIOUaeiou]$';
@@ -119,7 +115,7 @@ WHERE CITY REGEXP '^[AEIOUaeiou]' AND CITY REGEXP '[AEIOUaeiou]$';
 ### 7. Weather Observation Station 9
 Query the list of CITY names from STATION that do not start with vowels. Your result cannot contain duplicates.
 
-->
+##### Solution
 SELECT DISTINCT CITY
 FROM STATION
 WHERE CITY REGEXP '^[^AEIOUaeiou]';
@@ -134,7 +130,7 @@ WHERE CITY NOT REGEXP '^[AEIOUaeiou]';
 
 Query the list of CITY names from STATION that do not end with vowels. Your result cannot contain duplicates.
 
-->
+##### Solution
 SELECT DISTINCT CITY
 FROM STATION
 WHERE CITY NOT REGEXP '[AEIOUaeiou]$';
@@ -149,7 +145,7 @@ WHERE CITY REGEXP '[^AEIOUaeiou]$';
 
 Query the list of CITY names from STATION that either do not start with vowels or do not end with vowels. Your result cannot contain duplicates.
 
-->
+##### Solution
 SELECT DISTINCT CITY
 FROM STATION
 WHERE CITY NOT REGEXP '^[AEIOUaeiou]' OR CITY NOT REGEXP '[AEIOUaeiou]$';
@@ -164,7 +160,7 @@ WHERE CITY REGEXP '^[^AEIOUaeiou]' OR CITY REGEXP '[^AEIOUaeiou]$';
 
 Query the list of CITY names from STATION that do not start with vowels and do not end with vowels. Your result cannot contain duplicates.
 
-->
+##### Solution
 SELECT DISTINCT CITY
 FROM STATION
 WHERE NOT CITY REGEXP '^[AEIOUaeiou]' AND NOT CITY REGEXP '[AEIOUaeiou]$';
@@ -173,7 +169,7 @@ WHERE NOT CITY REGEXP '^[AEIOUaeiou]' AND NOT CITY REGEXP '[AEIOUaeiou]$';
 
 Query the Name of any student in STUDENTS who scored higher than 75 Marks. Order your output by the last three characters of each name. If two or more students both have names ending in the same last three characters (i.e.: Bobby, Robby, etc.), secondary sort them by ascending ID.
 
-->
+##### Solution
 SELECT Name
 FROM STUDENTS
 WHERE Marks > 75
@@ -183,7 +179,7 @@ ORDER BY RIGHT(Name, 3), ID ASC;
 
 Write a query that prints a list of employee names (i.e.: the name attribute) from the Employee table in alphabetical order.
 
-->
+##### Solution
 SELECT name
 FROM Employee
 ORDER BY name ASC
