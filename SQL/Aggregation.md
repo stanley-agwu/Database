@@ -1,7 +1,7 @@
 # Aggregation
 
 ### 1. The Count Function
-Query a count of the number of cities in CITY having a Population larger than .
+Query a count of the number of cities in CITY having a Population larger than 100,000.
 The CITY table is described as follows:
 
 STATION: 
@@ -23,4 +23,12 @@ STATION:
 SELECT COUNT(NAME)
 FROM CITY
 WHERE POPULATION > 100000
+---------------------------------------------------------------------------
+### 2. The Sum Function
+Query the total population of all cities in CITY where District is California.
+
+#### Solution
+SELECT SUM(POPULATION)
+FROM CITY
+WHERE DISTRICT = "California"
 ---------------------------------------------------------------------------
