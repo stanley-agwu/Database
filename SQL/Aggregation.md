@@ -129,3 +129,11 @@ FROM STATION
 WHERE LAT_N > 38.7880
   AND LAT_N < 137.2345;
 --------------------------------------------------------------------------
+### 11. Weather Observation Station 14
+Query the greatest value of the Northern Latitudes (LAT_N) from STATION that is less than 137.2345. Truncate your answer to  decimal places.
+
+#### Solution - Mysql
+SELECT TRUNCATE(MAX(LAT_N), 4)
+FROM STATION
+WHERE LAT_N < 137.2345;
+--------------------------------------------------------------------------
